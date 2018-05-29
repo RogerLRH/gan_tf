@@ -65,8 +65,8 @@ class CGAN(object):
         fakes = sample_uniform(gen_size)
         return {self._labels: labels, self._fakes: fakes}
 
-    def train(self, data_file, sample_dir="samples", ckpt_dir='checkpoints', checkpoint=None, epoches=10000, batch_size=128, D_k=1, G_k=1):
-        data = GANClassloader(data_file, batch_size=batch_size)
+    def train(self, data_file, data_loader=GANClassloader, sample_dir="samples", ckpt_dir='checkpoints', checkpoint=None, epoches=10000, batch_size=128, D_k=1, G_k=1):
+        data = data_loader(data_file, batch_size=batch_size)
         gen_size = [batch_size, self._gen_input_len]
         if not os.path.exists(sample_dir):
             os.mkdir(sample_dir)

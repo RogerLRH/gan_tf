@@ -48,8 +48,8 @@ class GAN(object):
     def _feed_dict_G(self, gen_size):
         return {self._fakes: sample_uniform(gen_size)}
 
-    def train(self, data_file, sample_dir="samples", ckpt_dir='checkpoints', checkpoint=None, epoches=10000, batch_size=128, D_k=1, G_k=1):
-        data = GANloader(data_file, batch_size=batch_size)
+    def train(self, data_file, data_loader=GANloader, sample_dir="samples", ckpt_dir='checkpoints', checkpoint=None, epoches=10000, batch_size=128, D_k=1, G_k=1):
+        data = data_loader(data_file, batch_size=batch_size)
         gen_size = [batch_size, self._gen_input_len]
         if not os.path.exists(sample_dir):
             os.mkdir(sample_dir)
