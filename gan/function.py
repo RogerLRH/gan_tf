@@ -79,7 +79,7 @@ def get_optimizer(loss, opt_type="Adam", opt_params=None, optimizer=None, variab
 #     data = input_data.read_data_sets(data_file, one_hot=True)
 #     while True:
 #         batch = data.train.next_batch(batch_size)[0]
-#         inputs = ((batch[0] - 1)*2)
+#         inputs = ((batch[0] - 0.5)*2)
 #         inputs = inputs.reshape([-1, 28, 28, 1])
 #         yield inputs
 #
@@ -88,22 +88,38 @@ def get_optimizer(loss, opt_type="Adam", opt_params=None, optimizer=None, variab
 #     data = input_data.read_data_sets(data_file, one_hot=True)
 #     while True:
 #         batch = data.train.next_batch(batch_size)
-#         inputs = ((batch[0] - 1)*2)
+#         inputs = ((batch[0] - 0.5)*2)
 #         inputs = inputs.reshape([-1, 28, 28, 1])
 #         yield inputs, batch[1]
 
 
 # image folder
 def GANloader(folder, batch_size=128):
-    filelist = [file for file in os.listdir(folder) if not os.path.isdir(file)]
+    filelist = [os.path.join(folder, file) for file in os.listdir(folder) if not os.path.isdir(os.path.join(folder, file))]
     num = len(filelist)
     while True:
         inputs = []
         for _ in range(batch_size):
             idx = np.random.randint(num)
-            sample = mpimg.imread(os.path.join(folder, filelist[idx]))
+            sample = mpimg.imread(filelist[idx])
+            sample = (sample / 256 - 0.5) * 2
             inputs.append(sample)
         yield np.array(inputs)
 
+
 def GANClassloader(folder, batch_size=128):
-    pass
+    folderlist = [os.path.join(folder, file) for file in os.listdir(folder) if os.path.isdir(os.path.join(folder, file))]
+    filelists = []
+    for fd in folderlist:
+        filelists.append([os.path.join(fd, file) for file in os.listdir(fd) if os.path.isdir(os.path.join(fd, file))])
+    num = len(folderlist)
+    while True:
+        inputs, labels = [], []
+        for _ in range(batch_size):
+            category = np.random.randint(num)
+            idx = np.random.randint(len(filelists[category]))
+            sample = mpimg.imread(filelists[category][idx])
+            sample = (sample / 256 - 0.5) * 2
+            inputs.append(sample)
+            labels.append(category)
+        yield np.array(inputs), np.eye(num)[labels]
