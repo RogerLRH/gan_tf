@@ -1,0 +1,11 @@
+*.pyc
+best_model
+samples
+checkpoints
+*.txt
+*.csv
+*.pkl
+.git
+.DS_Store
+*.ipynb*
+__pycache__
