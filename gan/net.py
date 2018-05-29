@@ -95,9 +95,8 @@ class ConvGenerator(object):
 
 
 class ConvDiscriminator(object):
-    def __init__(self, conv_sizes, fc_sizes, keep_dropout_p=0.8, name="Discriminator"):
+    def __init__(self, conv_sizes, keep_dropout_p=0.8, name="Discriminator"):
         self._conv_sizes = conv_sizes
-        self._fc_sizes = fc_sizes
         self._keep_dropout_p = keep_dropout_p
         self.name = name
 
@@ -108,9 +107,6 @@ class ConvDiscriminator(object):
                 h = layers.conv2d(h, num_outputs=channel, kernel_size=kernel, stride=stride, normalizer_fn=layers.batch_norm)
                 h = layers.dropout(h, self._keep_dropout_p)
             h = layers.flatten(h)
-            for size in self._fc_sizes:
-                h = layers.fully_connected(h, size, activation_fn=tf.nn.leaky_relu, normalizer_fn=layers.batch_norm)
-                h = layers.dropout(h, self._keep_dropout_p)
             logits = layers.fully_connected(h, 1, activation_fn=None)
             return logits
 

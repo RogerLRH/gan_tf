@@ -1,6 +1,7 @@
 *.pyc
 best_model
 samples
+Datas
 checkpoints
 *.txt
 *.csv
