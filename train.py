@@ -9,7 +9,7 @@
 #
 # # model = GAN(gen, dis, [28, 28, 1], 100)
 # model = GANClassifier(gen, dis, clf, [28, 28, 1], 10, 100)
-# model.train("../GAN/Datas/mnist")
+# model.train("Datas/mnist")
 
 
 from gan.net import ConvGenerator, ConvDiscriminator
@@ -20,4 +20,4 @@ dis = ConvDiscriminator([(24, 4, 2), (96, 4, 2), (192, 4, 2)], [], keep_dropout_
 
 # model = GAN(gen, dis, [96, 96, 3], 100)
 model = WGAN(gen, dis, [96, 96, 3], 100)
-model.train("../DCGAN-tensorflow/data/faces")
+model.train("Datas/faces")
